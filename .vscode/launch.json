@@ -8,9 +8,12 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
+            "preLaunchTask": "tsc",
             "program": "${workspaceRoot}/app.ts",
             "cwd": "${workspaceRoot}",
-            "outFiles": []
+            "outFiles": [
+                "${workspaceRoot}/build/**/*.js"
+            ]
         },
         {
             "type": "node",
