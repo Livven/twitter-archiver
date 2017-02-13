@@ -29,11 +29,11 @@ class TwitterClient {
     }
 
     public async getUserIds(type: string, user: string) {
-        const result = [] as number[];
+        const result = [] as string[];
         let cursor = -1;
         do {
             const json = await this.getUserIdsCore(type, user, cursor);
-            const ids = json['ids'] as number[];
+            const ids = json['ids'] as string[];
             result.push(...ids);
             cursor = json['next_cursor'];
         } while (cursor > 0);
@@ -41,15 +41,15 @@ class TwitterClient {
         return [...new Set(result)];
     }
 
-    public async getUsers(ids: number[]) {
+    public async getUsers(ids: string[]) {
         const limit = 100;
-        const result = new Map<number, any>();
+        const result = new Map<string, any>();
         ids = [...new Set(ids)];
         for (let i = 0; i < ids.length; i += limit) {
             const partialIds = ids.slice(i, i + limit);
             const partialResult = await this.getUsersCore(partialIds);
             for (const item of partialResult) {
-                result.set(item['id'], item);
+                result.set(item['id_str'], item);
             }
         }
         return result;
@@ -63,13 +63,15 @@ class TwitterClient {
                 screen_name: user,
                 count: limit,
                 cursor: cursor,
+                // necessary for handling large ids
+                stringify_ids: true,
             },
             json: true,
         });
         return json;
     }
 
-    private async getUsersCore(ids: number[]) {
+    private async getUsersCore(ids: string[]) {
         const json = await request.get('https://api.twitter.com/1.1/users/lookup.json', {
             auth: this.auth,
             qs: {
@@ -92,7 +94,7 @@ async function main() {
     await writeUsers(users);
 }
 
-async function writeList(name: string, ids: number[], users: Map<number, any>) {
+async function writeList(name: string, ids: string[], users: Map<string, any>) {
     const list = ids.map(id => getName(users, id));
     const result = {
         count: list.length,
@@ -101,7 +103,7 @@ async function writeList(name: string, ids: number[], users: Map<number, any>) {
     await fs.writeJson(`${name}.json`, result);
 }
 
-async function writeUsers(users: Map<number, any>) {
+async function writeUsers(users: Map<string, any>) {
     const folder = 'users';
     await fs.ensureDir(folder);
     for (const user of users.values()) {
@@ -109,7 +111,7 @@ async function writeUsers(users: Map<number, any>) {
     }
 }
 
-function getName(users: Map<number, any>, id: number) {
+function getName(users: Map<string, any>, id: string) {
     const user = users.get(id);
     return user ? `${user['name']} (${user['screen_name']})` : id;
 }
