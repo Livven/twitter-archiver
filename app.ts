@@ -89,6 +89,7 @@ async function main() {
     const followerIds = await client.getUserIds('followers', config.TWITTER_USERNAME);
     const followingIds = await client.getUserIds('friends', config.TWITTER_USERNAME);
     const users = await client.getUsers([...followerIds, ...followingIds]);
+    users.forEach(formatUser);
     await writeList('followers', followerIds, users);
     await writeList('following', followingIds, users);
     await writeUsers(users);
@@ -114,6 +115,18 @@ async function writeUsers(users: Map<string, any>) {
 function getName(users: Map<string, any>, id: string) {
     const user = users.get(id);
     return user ? `${user['name']} (${user['screen_name']})` : id;
+}
+
+function formatUser(user: any) {
+    const entities = user['entities'];
+    for (const property of Object.keys(entities)) {
+        for (const urlEntity of entities[property]['urls']) {
+            const value = user[property] as string;
+            user[property] = value.replace(urlEntity['url'], urlEntity['expanded_url']);
+        }
+    }
+    delete user['entities'];
+    delete user['status'];
 }
 
 main();
