@@ -6,6 +6,29 @@
     "rules": {
         // disable for compatibiliy with vs code extension which does not support type checking
         "no-for-in-array": false,
-        "restrict-plus-operands": false
+        "restrict-plus-operands": false,
+        // other customizations
+        "function-name": false,
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
+        "linebreak-style": false,
+        "max-line-length": false,
+        "missing-jsdoc": false,
+        "no-angle-bracket-type-assertion": true,
+        "no-any": false,
+        "no-reserved-keywords": false,
+        "no-string-literal": false,
+        "no-unnecessary-local-variable": false,
+        "object-literal-shorthand": false,
+        "prefer-type-cast": false,
+        "trailing-comma": [
+            true,
+            {
+                "singleline": "never",
+                "multiline": "always"
+            }
+        ]
     }
 }

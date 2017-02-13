@@ -9,6 +9,7 @@
             "request": "launch",
             "name": "Launch Program",
             "preLaunchTask": "tsc",
+            "envFile": "${workspaceRoot}/.env",
             "program": "${workspaceRoot}/app.ts",
             "cwd": "${workspaceRoot}",
             "outFiles": [
