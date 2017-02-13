@@ -41,6 +41,17 @@ class TwitterClient {
         return [...new Set(result)];
     }
 
+    public async getUser(name: string) {
+        const json = await request.get('https://api.twitter.com/1.1/users/show.json', {
+            auth: this.auth,
+            qs: {
+                screen_name: name,
+            },
+            json: true,
+        });
+        return json;
+    }
+
     public async getUsers(ids: string[]) {
         const limit = 100;
         const result = new Map<string, any>();
@@ -86,10 +97,13 @@ class TwitterClient {
 async function main() {
     const config = process.env as Config;
     const client = await TwitterClient.create(config.TWITTER_API_KEY, config.TWITTER_API_SECRET);
+    const me = await client.getUser(config.TWITTER_USERNAME);
     const followerIds = await client.getUserIds('followers', config.TWITTER_USERNAME);
     const followingIds = await client.getUserIds('friends', config.TWITTER_USERNAME);
     const users = await client.getUsers([...followerIds, ...followingIds]);
+    formatUser(me);
     users.forEach(formatUser);
+    await fs.writeJson('me.json', me);
     await writeList('followers', followerIds, users);
     await writeList('following', followingIds, users);
     await writeUsers(users);
