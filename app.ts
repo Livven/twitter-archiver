@@ -1,7 +1,6 @@
+import axios, { AxiosInstance } from 'axios';
 import * as fs from 'fs-promise';
 import * as path from 'path';
-import { AuthOptions } from 'request';
-import * as request from 'request-promise';
 
 interface Config {
     TWITTER_API_KEY: string;
@@ -10,22 +9,25 @@ interface Config {
 }
 
 class TwitterClient {
-    private readonly auth: AuthOptions;
+    private axios: AxiosInstance;
 
     private constructor(public readonly token: string) {
-        this.auth = {
-            bearer: token,
-        };
+        this.axios = axios.create({
+            baseURL: 'https://api.twitter.com/1.1/',
+            headers: {
+                Authorization: `bearer ${token}`,
+            },
+        });
     }
 
     public static async create(key: string, secret: string) {
-        const json = await request.post(`https://${encodeURIComponent(key)}:${encodeURIComponent(secret)}@api.twitter.com/oauth2/token`, {
-            form: {
-                grant_type: 'client_credentials',
+        const response = await axios.post('https://api.twitter.com/oauth2/token', 'grant_type=client_credentials', {
+            auth: {
+                username: encodeURIComponent(key),
+                password: encodeURIComponent(secret),
             },
-            json: true,
         });
-        return new TwitterClient(json['access_token']);
+        return new TwitterClient(response.data['access_token']);
     }
 
     public async getUserIds(type: string, user: string) {
@@ -42,14 +44,12 @@ class TwitterClient {
     }
 
     public async getUser(name: string) {
-        const json = await request.get('https://api.twitter.com/1.1/users/show.json', {
-            auth: this.auth,
-            qs: {
+        const response = await this.axios.get('users/show.json', {
+            params: {
                 screen_name: name,
             },
-            json: true,
         });
-        return json;
+        return response.data;
     }
 
     public async getUsers(ids: string[]) {
@@ -68,29 +68,25 @@ class TwitterClient {
 
     private async getUserIdsCore(type: string, user: string, cursor: number) {
         const limit = 5000;
-        const json = await request.get(`https://api.twitter.com/1.1/${type}/ids.json`, {
-            auth: this.auth,
-            qs: {
+        const response = await this.axios.get(`${type}/ids.json`, {
+            params: {
                 screen_name: user,
                 count: limit,
                 cursor: cursor,
                 // necessary for handling large ids
                 stringify_ids: true,
             },
-            json: true,
         });
-        return json;
+        return response.data;
     }
 
     private async getUsersCore(ids: string[]) {
-        const json = await request.get('https://api.twitter.com/1.1/users/lookup.json', {
-            auth: this.auth,
-            qs: {
+        const response = await this.axios.get('users/lookup.json', {
+            params: {
                 user_id: ids.join(','),
             },
-            json: true,
         });
-        return json;
+        return response.data;
     }
 }
 

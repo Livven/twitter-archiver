@@ -4,14 +4,11 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "fs-promise": "^2.0.0",
-    "request": "^2.79.0",
-    "request-promise": "^4.1.1"
+    "axios": "^0.15.3",
+    "fs-promise": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^7.0.5",
-    "@types/request": "0.0.39",
-    "@types/request-promise": "^4.1.33",
     "tslint": "^4.4.2",
     "tslint-microsoft-contrib": "^4.0.0",
     "typescript": "^2.1.6"
