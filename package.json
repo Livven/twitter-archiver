@@ -5,13 +5,15 @@
   "main": "app.js",
   "dependencies": {
     "axios": "^0.15.3",
-    "fs-promise": "^2.0.0"
+    "fs-promise": "^2.0.2"
   },
   "devDependencies": {
-    "@types/node": "^7.0.5",
-    "tslint": "^4.4.2",
-    "tslint-microsoft-contrib": "^4.0.0",
-    "typescript": "^2.1.6"
+    "@types/fs-extra": "^2.1.0",
+    "@types/mz": "0.0.31",
+    "@types/node": "^7.0.12",
+    "tslint": "^4.5.1",
+    "tslint-microsoft-contrib": "^4.0.1",
+    "typescript": "^2.3.0"
   },
   "scripts": {
     "build": "tsc",
