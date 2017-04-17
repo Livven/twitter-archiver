@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "preLaunchTask": "tsc",
+            "preLaunchTask": "build",
             "envFile": "${workspaceRoot}/.env",
             "program": "${workspaceRoot}/app.ts",
             "cwd": "${workspaceRoot}",
