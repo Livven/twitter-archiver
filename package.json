@@ -5,12 +5,14 @@
   "main": "app.js",
   "dependencies": {
     "axios": "^0.15.3",
-    "fs-promise": "^2.0.2"
+    "fs-promise": "^2.0.2",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "@types/fs-extra": "^2.1.0",
     "@types/mz": "0.0.31",
     "@types/node": "^7.0.12",
+    "@types/uuid": "^2.0.29",
     "tslint": "^4.5.1",
     "tslint-microsoft-contrib": "^4.0.1",
     "typescript": "^2.3.0"

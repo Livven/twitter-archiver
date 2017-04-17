@@ -10,7 +10,7 @@
             "name": "Launch Program",
             "preLaunchTask": "build",
             "envFile": "${workspaceRoot}/.env",
-            "program": "${workspaceRoot}/app.ts",
+            "program": "${workspaceRoot}/src/app.ts",
             "cwd": "${workspaceRoot}",
             "outFiles": [
                 "${workspaceRoot}/build/**/*.js"

@@ -90,7 +90,7 @@ class TwitterClient {
     }
 }
 
-async function main() {
+export default async function twitter() {
     const config = process.env as Config;
     const client = await TwitterClient.create(config.TWITTER_API_KEY, config.TWITTER_API_SECRET);
     const me = await client.getUser(config.TWITTER_USERNAME);
@@ -138,5 +138,3 @@ function formatUser(user: any) {
     delete user['entities'];
     delete user['status'];
 }
-
-main();
