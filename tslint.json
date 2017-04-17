@@ -18,6 +18,7 @@
         "missing-jsdoc": false,
         "no-angle-bracket-type-assertion": true,
         "no-any": false,
+        "no-parameter-properties": false,
         "no-reserved-keywords": false,
         "no-string-literal": false,
         "no-unnecessary-local-variable": false,
@@ -29,6 +30,7 @@
                 "singleline": "never",
                 "multiline": "always"
             }
-        ]
+        ],
+        "typedef": false
     }
 }
