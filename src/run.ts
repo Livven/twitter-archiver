@@ -1,6 +1,6 @@
-import { execFileSync } from 'child_process';
 import * as fs from 'fs-promise';
 import * as uuid from 'uuid';
+import { execFile } from './exec';
 
 interface Config {
     GIT_USER_EMAIL: string;
@@ -15,14 +15,14 @@ export default async function run(action: () => Promise<void>) {
 
     const config = process.env as Config;
 
-    execFileSync('git', ['clone', config.GIT_OUTPUT_REPO, '.', '--depth=1', '--no-checkout']);
+    await execFile('git', ['clone', config.GIT_OUTPUT_REPO, '.', '--depth=1', '--no-checkout']);
 
-    execFileSync('git', ['config', 'user.email', config.GIT_USER_EMAIL]);
-    execFileSync('git', ['config', 'user.name', config.GIT_USER_NAME]);
+    await execFile('git', ['config', 'user.email', config.GIT_USER_EMAIL]);
+    await execFile('git', ['config', 'user.name', config.GIT_USER_NAME]);
 
     await action();
 
-    execFileSync('git', ['add', '-A']);
-    execFileSync('git', ['commit', '-m', 'automatic update']);
-    execFileSync('git', ['push']);
+    await execFile('git', ['add', '-A']);
+    await execFile('git', ['commit', '-m', 'automatic update']);
+    await execFile('git', ['push']);
 }
