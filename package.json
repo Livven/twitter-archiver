@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "7.x"
+  },
   "dependencies": {
     "axios": "^0.15.3",
     "dotenv": "^4.0.0",
