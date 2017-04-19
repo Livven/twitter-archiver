@@ -98,7 +98,7 @@ export default async function twitter() {
     const followingIds = await client.getUserIds('friends', config.TWITTER_USERNAME);
     const users = await client.getUsers([...followerIds, ...followingIds]);
     formatUser(me);
-    users.forEach(formatUser);
+    users.forEach(user => formatUser(user, true));
     await fs.writeJson('me.json', me);
     await writeList('followers', followerIds, users);
     await writeList('following', followingIds, users);
@@ -127,7 +127,7 @@ function getName(users: Map<string, any>, id: string) {
     return user ? `${user['name']} (${user['screen_name']})` : id;
 }
 
-function formatUser(user: any) {
+function formatUser(user: any, round: boolean = false) {
     const entities = user['entities'];
     for (const property of Object.keys(entities)) {
         for (const urlEntity of entities[property]['urls']) {
@@ -137,4 +137,19 @@ function formatUser(user: any) {
     }
     delete user['entities'];
     delete user['status'];
+
+    if (round) {
+        for (let property of Object.keys(user)) {
+            let value = user[property];
+            // delete and re-add all properties to maintain original order
+            delete user[property];
+            if (property.endsWith('_count') && typeof value === 'number') {
+                property += '_rounded';
+                if (value > 10) {
+                    value = Math.round(value / 10) * 10;
+                }
+            }
+            user[property] = value;
+        }
+    }
 }
