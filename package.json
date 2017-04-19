@@ -20,6 +20,7 @@
     "typescript": "^2.3.0"
   },
   "scripts": {
+    "lint": "tslint --project tsconfig.json --type-check --format verbose",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build && node build/app.js"

@@ -8,6 +8,11 @@
     "suppressTaskName": true,
     "tasks": [
         {
+            "taskName": "lint",
+            "args": ["run", "lint"],
+            "problemMatcher": "$tslint4"
+        },
+        {
             "taskName": "build",
             "args": ["run", "build"]
         }
