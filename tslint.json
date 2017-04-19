@@ -4,10 +4,6 @@
         "tslint-microsoft-contrib/tslint.json"
     ],
     "rules": {
-        // disable for compatibiliy with vs code extension which does not support type checking
-        "no-for-in-array": false,
-        "restrict-plus-operands": false,
-        // other customizations
         "function-name": false,
         "interface-name": [
             true,
