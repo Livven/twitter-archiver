@@ -5,16 +5,16 @@
     "command": "npm",
     "isShellCommand": true,
     "showOutput": "always",
-    "suppressTaskName": true,
+    "args": [
+        "run"
+    ],
     "tasks": [
         {
             "taskName": "lint",
-            "args": ["run", "lint"],
             "problemMatcher": "$tslint4"
         },
         {
-            "taskName": "build",
-            "args": ["run", "build"]
+            "taskName": "build"
         }
     ]
 }
